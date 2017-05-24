@@ -56,7 +56,6 @@ public class AccountController extends Controller {
     
     /**
      * 削除実行用アクションメソッド
-     * @param id 削除対象ユーザーID
      * @return AccountController.indexへのリダイレクト
      */
     @Security.Authenticated(AdminSecured.class)
