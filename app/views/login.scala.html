@@ -20,7 +20,12 @@ and open the template in the editor.
     </header>   
     <div id="login-form">
       <div class="uk-card uk-card-default uk-card-body"> 
-        @if(flash.get("message") != null){<p class="login-err">@flash.get("message")</p>}
+        @if(flash.get("message") != null){
+          <div class="uk-alert-danger" uk-alert>
+            <a class="uk-alert-close" uk-close></a>
+            <p>@flash.get("message")</p>
+          </div>
+        }
         @form(action = routes.SessionController.doLogin()) {
           <fieldset class="uk-fieldset">
             @CSRF.formField

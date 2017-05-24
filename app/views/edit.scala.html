@@ -32,7 +32,10 @@
         <input type="submit" class="uk-button uk-button-primary" value="update" /> 
       }
       @if(flash.get("exceptionUser") != null){
-        <p>@flash.get("exceptionUser")</p>
+        <div class="uk-alert-danger" uk-alert>
+          <a class="uk-alert-close" uk-close></a>
+          <p>@flash.get("exceptionUser")</p>
+        </div>
       }
     </div> 
     <div class="register-form uk-card uk-card-default uk-card-body"> 
@@ -48,7 +51,10 @@
         <input type="submit" class="uk-button uk-button-primary" value="update" /> 
       }
       @if(flash.get("exceptionPass") != null){
-        <p>@flash.get("exceptionPass")</p>
+        <div class="uk-alert-danger" uk-alert>
+          <a class="uk-alert-close" uk-close></a>
+          <p>@flash.get("exceptionPass")</p>
+        </div>>
       }
     </div>
 }
