@@ -1,6 +1,6 @@
-@(title: String)(id: Long)(registerForm: Form[dto.UserUpdateRequest])(passwordForm: Form[dto.PasswordUpdateRequest])
+@(title: String)(id: Long)(registerForm: Form[models.dto.UserUpdateRequest])(passwordForm: Form[models.dto.PasswordUpdateRequest])
 @import helper._
-@import dto._
+@import models.dto._
 
 @main(title) {
     <header uk-sticky="media: true" class="uk-navbar-container tm-navbar-container uk-sticky uk-sticky-fixed uk-active"> 
