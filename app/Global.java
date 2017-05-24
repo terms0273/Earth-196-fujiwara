@@ -26,6 +26,10 @@ public class Global extends GlobalSettings {
         return new Class[]{CSRFFilter.class};
     }
     
+    /**
+     * アプリケーションスタート時に一度のみ呼び出されるメソッド
+     * @param app 
+     */
     @Override
     public void onStart(Application app) {
         // 管理者ユーザー一覧取得
