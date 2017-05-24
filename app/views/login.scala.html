@@ -1,0 +1,44 @@
+@(title: String)(loginForm: Form[models.dto.LoginRequest])
+@import helper._
+@import models.dto._
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+@main(title) {
+  <div id="main-contents">
+    <header uk-sticky="media: true" id="login-header" class="uk-navbar-container tm-navbar-container uk-sticky uk-sticky-fixed uk-active"> 
+      <div class="uk-container-expand"> 
+        <nav class="uk-navbar"> 
+          <div class="uk-navbar-left"> 
+            <a class="uk-navbar-item uk-logo" href='@routes.SessionController.login'>Earth</a> 
+          </div> 
+        </nav>   
+      </div>
+    </header>   
+    <div id="login-form">
+      <div class="uk-card uk-card-default uk-card-body"> 
+        @if(flash.get("message") != null){<p class="login-err">@flash.get("message")</p>}
+        @form(action = routes.SessionController.doLogin()) {
+          <fieldset class="uk-fieldset">
+            @CSRF.formField
+            @inputText(loginForm("loginId"), '_label ->"LOGIN ID",
+              'placeholder -> "LOGIN ID", 'class -> "uk-input")
+            @inputText(loginForm("password"), '_label -> "PASSWORD",
+              'placeholder -> "PASSWORD", 'class -> "uk-input")
+            <input type="submit" class="uk-button uk-button-primary" value="login" /> 
+          </fieldset>
+        }
+      </div>
+    </div>
+  </div> 
+  <div class="pattern"></div>
+  <div class="overlay"> 
+    <video autoplay loop poster="@routes.Assets.at("images/loginbg3.png")" id="bgvid"> 
+           <!-- 参考: https://videos.pexels.com/search/weather -->
+           <source src="@routes.Assets.at("videos/679957977.mp4")" type="video/mp4"> 
+    </video> 
+  </div>
+}

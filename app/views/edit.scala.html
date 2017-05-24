@@ -1,0 +1,54 @@
+@(title: String)(id: Long)(registerForm: Form[dto.UserUpdateRequest])(passwordForm: Form[dto.PasswordUpdateRequest])
+@import helper._
+@import dto._
+
+@main(title) {
+    <header uk-sticky="media: true" class="uk-navbar-container tm-navbar-container uk-sticky uk-sticky-fixed uk-active"> 
+      <div class="uk-container-expand"> 
+        <nav class="uk-navbar"> 
+          <div class="uk-navbar-left"> 
+            <a class="uk-navbar-item uk-logo" >Earth</a> 
+          </div> 
+          <div class="uk-margin uk-navbar-right"> 
+            <ul class="uk-navbar-nav"> 
+              <li> 
+                <button class="uk-button uk-button-default logout" onclick="location.href='@routes.SessionController.logout'">
+                  LOGOUT 
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>   
+      </div>
+    </header>   
+    <div class="register-form uk-card uk-card-default uk-card-body"> 
+      <legend class="uk-legend">USER EDIT</legend> 
+      @form(action = routes.AccountController.update(id)) {
+        @CSRF.formField
+        @inputText(registerForm("userName"), '_label -> "USER NAME",
+          'placeholder -> "USER NAME", 'class -> "uk-input")
+        @inputText(registerForm("fullName"), '_label -> "FULL NAME",
+          'placeholder -> "FULL NAME", 'class -> "uk-input")
+        <input type="submit" class="uk-button uk-button-primary" value="update" /> 
+      }
+      @if(flash.get("exceptionUser") != null){
+        <p>@flash.get("exceptionUser")</p>
+      }
+    </div> 
+    <div class="register-form uk-card uk-card-default uk-card-body"> 
+      <legend class="uk-legend">PASSWORD EDIT</legend> 
+      @form(action = routes.AccountController.passwordUpdate(id)) {
+        @CSRF.formField
+        @inputText(passwordForm("oldPassword"), '_label -> "OLD PASSWORD", 'value -> "",
+          'type -> "password", 'placeholder -> "OLD PASSWORD", 'class -> "uk-input")
+        @inputText(passwordForm("newPassword"), '_label -> "NEW PASSWORD", 'value -> "",
+          'type -> "password", 'placeholder -> "NEW PASSWORD", 'class -> "uk-input")
+        @inputText(passwordForm("confirmNewPassword"), '_label -> "CONFIRM NEW PASSWORD", 'value -> "",
+          'type -> "password", 'placeholder -> "CONFIRM NEW PASSWORD", 'class -> "uk-input")
+        <input type="submit" class="uk-button uk-button-primary" value="update" /> 
+      }
+      @if(flash.get("exceptionPass") != null){
+        <p>@flash.get("exceptionPass")</p>
+      }
+    </div>
+}
