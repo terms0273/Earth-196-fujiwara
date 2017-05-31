@@ -6,6 +6,7 @@ const createUrl = Symbol('createUrl');
 const createImgUrl = Symbol('createImgUrl');
 const animationWrapper = Symbol('animationWrapper');
 const appendAlert = Symbol('appendAlert');
+const timeout = Symbol('timeout');
 
 // Symbol対策
 import "babel-polyfill";
@@ -25,6 +26,7 @@ export default class Weather {
    */
   constructor() {
     this[city] = "Tokyo";
+    this[timeout] = 400;
   }
 
   /**
@@ -123,9 +125,9 @@ export default class Weather {
    * @memberOf Weather
    */
   [animationWrapper](elem, callback) {
-    elem.fadeOut(400, () => {
+    elem.fadeOut(this[timeout], () => {
       callback();
-      elem.fadeIn(400);
+      elem.fadeIn(this[timeout]);
     });    
   }
   
@@ -134,7 +136,7 @@ export default class Weather {
             '<a class="uk-alert-close" uk-close></a>' + 
             '<p>取得出来ませんでした:' + mes + '</p>' + 
             '</div>';
-    $("#alert-area").hide().html(alertDiv).fadeIn(400);  
+    $("#alert-area").hide().html(alertDiv).fadeIn(this[timeout]);  
   }
 
   /**
