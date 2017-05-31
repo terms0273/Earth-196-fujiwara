@@ -1,7 +1,8 @@
 package controllers;
 
-import models.auth.AdminSecured;
-import models.auth.LoginSecured;
+import java.util.List;
+import models.auth.*;
+import models.dao.Account;
 import models.dto.DeleteRequest;
 import models.dto.UserUpdateRequest;
 import models.dto.PasswordUpdateRequest;
@@ -22,9 +23,11 @@ public class AccountController extends Controller {
      * @return ユーザー一覧ページHTML
      */
     public static Result index() {
-        Long id =Long.parseLong(session("id"));
         UserManager manager = new UserManager();
-        return ok(userIndex.render("USER INDEX", id, manager.getAll()));
+        Account user = manager.getUser(session("username"));
+        List<Account> users = manager.getAll();
+        
+        return ok(userIndex.render("USER INDEX", user.id, user.type, users));
     }
     
     /**
@@ -32,6 +35,7 @@ public class AccountController extends Controller {
      * @param id 編集対象ユーザーID
      * @return エディットページHTML
      */
+    @Security.Authenticated(MemberSecured.class)
     public static Result edit(Long id) {
         return ok(edit.render("EDIT PAGE", id, form(UserUpdateRequest.class), form(PasswordUpdateRequest.class)));
     } 
@@ -41,6 +45,7 @@ public class AccountController extends Controller {
      * @param id edit対象ユーザーID
      * @return AccountController.indexへのリダイレクト
      */
+    @Security.Authenticated(MemberSecured.class)
     public static Result update(Long id) {
         return ok("aaa");
     }
@@ -50,6 +55,7 @@ public class AccountController extends Controller {
      * @param id edit対象ユーザーID
      * @return SessionController.loginへのリダイレクト
      */
+    @Security.Authenticated(MemberSecured.class)
     public static Result passwordUpdate(Long id) {
         return ok("aaa");
     }

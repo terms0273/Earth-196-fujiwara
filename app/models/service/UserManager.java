@@ -24,6 +24,23 @@ public class UserManager {
     }
     
     /**
+     * ログイン中のユーザーIDに紐づくプライマリーキーを取得するメソッド
+     * @param username セッションに入っているユーザーID
+     * @return ユーザーIDに紐づくプライマリーキー
+     */
+    public Long getId(String username) {
+        return Account.find.where().eq("userName", username).findUnique().id;
+    }
+    
+    public Integer getType(String username) {
+        return Account.find.where().eq("userName", username).findUnique().type;
+    }
+    
+    public Account getUser(String username) {
+        return Account.find.where().eq("userName", username).findUnique();
+    }
+    
+    /**
      * 論理削除実行メソッド
      * @param id 削除対象ID
      * @return true: 削除成功 false: 削除失敗

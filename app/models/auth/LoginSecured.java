@@ -19,7 +19,7 @@ public class LoginSecured  extends Security.Authenticator{
     
     @Override
     public String getUsername(Http.Context ctx){
-        return ctx.session().get("id");
+        return ctx.session().get("username");
     }
 
     @Override

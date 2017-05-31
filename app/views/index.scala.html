@@ -1,7 +1,70 @@
 @(message: String)
 
-@main("Welcome to Play") {
-
-    @play20.welcome(message, style = "Java")
-
+@main("MAIN") {
+    <div id="main">
+        <div class="uk-flex uk-flex-column uk-margin"> 
+          <h1 class="uk-heading-line"><span id="city-name">Current weather in</span></h1>
+          <div class=" uk-margin uk-flex">
+            <input class="uk-input input-city" id="input-city" type="text" placeholder="Enter place name"> 
+            <button class="uk-button uk-button-primary" id="search-city">SEARCH</button>
+          </div>
+        </div>
+        <div id="contents">
+          <div class="represent">
+            <div class="uk-overflow-auto represent-contents">
+              <table class="uk-table uk-table-striped"> 
+                <thead> 
+                  <tr> 
+                    <th>ITEM</th> 
+                    <th>DATA</th> 
+                  </tr> 
+                </thead> 
+                <tbody> 
+                  <tr> 
+                    <td>WEATHER</td> 
+                    <td id="weather">
+                    </td> 
+                  </tr> 
+                  <tr> 
+                    <td>TEMPERATURE</td> 
+                    <td id="temperature"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>AIR FLOW</td> 
+                    <td id="wind"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>CLOUD COVER</td> 
+                    <td id="cloud"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>PRESSURE</td> 
+                    <td id="pressure"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>HUMIDITY</td> 
+                    <td id="humidity"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>SUNRISE</td> 
+                    <td id="sunrise"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>SUNSET</td> 
+                    <td id="sunset"></td> 
+                  </tr> 
+                  <tr> 
+                    <td>LAT LON</td> 
+                    <td id="latlon"></td> 
+                  </tr>
+                </tbody> 
+              </table>
+            </div>
+          </div>
+          <div id="map-contents" class="uk-margin-left">
+            <div id="map"></div>
+          </div>
+        </div>      
+      </div> 
+    </div>
 }

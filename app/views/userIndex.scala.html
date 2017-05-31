@@ -1,4 +1,4 @@
-@(title: String)(id: Long)(users: List[models.dao.Account])
+@(title: String)(id: Long)(userType: Integer)(users: List[models.dao.Account])
 @import helper._
 @import models.dao._
 @main(title) {
@@ -38,12 +38,12 @@
                 <td>@user.userName</td> 
                 <td>@user.fullName</td> 
                 <td>
-                @if(session.get("id").equals(user.id.toString())) {
-                <button class="uk-button uk-button-primary" onclick="location.href='@routes.AccountController.edit(user.id)'">EDIT</button>
-                }
+                  @if(user.id.equals(id)) {
+                    <button class="uk-button uk-button-primary" onclick="location.href='@routes.AccountController.edit(user.id)'">EDIT</button>
+                  }
                 </td>
                 <td>
-                @if(session.get("type").equals("0")) {
+                @if(userType == 0) {
                   @form(action = routes.AccountController.delete()) {          
                     @CSRF.formField
                     <input type="hidden" value="@user.id" name="deleteId" />

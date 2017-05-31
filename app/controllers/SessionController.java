@@ -1,6 +1,7 @@
 package controllers;
 
 
+import models.auth.LoginSecured;
 import models.dao.Account;
 import models.dto.LoginRequest;
 import models.service.LoginManager;
@@ -37,13 +38,14 @@ public class SessionController extends Controller {
         }
         createSession(user);
         
-        return redirect(routes.AccountController.index());
+        return redirect(routes.MainController.index());
     }
     
     /**
      * ログアウトアクションメソッド
      * @return 
      */
+    @Security.Authenticated(LoginSecured.class)
     public static Result logout() {
         deleteSession();
         return redirect(routes.SessionController.login());
@@ -53,8 +55,6 @@ public class SessionController extends Controller {
      * セッション作成メソッド
      */
     private static void createSession(Account user) {
-        session("id", user.id.toString());
-        session("type", user.type.toString());
         session("username", user.userName);
     }
     

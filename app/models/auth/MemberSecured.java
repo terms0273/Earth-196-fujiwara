@@ -16,18 +16,22 @@ import play.mvc.Security;
  *
  * @author y-fujiwara
  */
-public class AdminSecured extends Security.Authenticator{
+public class MemberSecured extends Security.Authenticator{
     
+    /**
+     * クエリパラメータとセッション情報が同一かチェックするメソッド
+     * @param ctx
+     * @return 
+     */
     @Override
-    public String getUsername(Http.Context ctx){
+    public String getUsername(Http.Context ctx) {
         String username = ctx.session().get("username");
-        Integer type = Account.find.where().eq("userName", username).findUnique().type;
+        Long id = Account.find.where().eq("userName", username).findUnique().id;
         
-        // セッションにusernameが入ってないかadminユーザーでなければセキュリティを掛ける
-        if(username == null || type == null || type != 0) {
-            return null;
+        if(ctx.request().getQueryString("id").equals(id.toString())) {
+            return "OK";
         }
-        return "ok";
+        return null;
     }
 
     @Override
