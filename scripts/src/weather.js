@@ -116,8 +116,8 @@ export default class Weather {
     /**
    * 汎用アニメーションメソッド
    * 
-   * @param {elem} 更新対象DOMエレメント
-   * @param {callback} フェードイン後発火コールバック関数
+   * @param {any} elem 更新対象DOMエレメント
+   * @param {any} callback フェードイン後発火コールバック関数
    * 
    * @memberOf Weather
    */
