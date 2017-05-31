@@ -18896,24 +18896,35 @@ module.exports = g;
 
 /***/ }),
 /* 231 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_leaflet__ = __webpack_require__(415);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_polyfill__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_polyfill___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_polyfill__);
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _leaflet = __webpack_require__(415);
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+__webpack_require__(86);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // private用 厳密にはprivateではない
 // * 同一ファイル内からは容易に呼び出される
 // * getOwnPropertySymbolsからも参照される
-const map = Symbol('map');
-const init = Symbol('init');
-const zoom = Symbol('zoom');
+var map = Symbol('map');
+var init = Symbol('init');
+var zoom = Symbol('zoom');
 
 // Symbol対策
-
 
 /**
  * 地図領域表示用クラス
@@ -18921,14 +18932,16 @@ const zoom = Symbol('zoom');
  * @export
  * @class Map
  */
-class Map {
+var Map = function () {
 
   /**
    * Creates an instance of Map.
    * 
    * @memberOf Map
    */
-  constructor() {
+  function Map() {
+    _classCallCheck(this, Map);
+
     this[map] = {};
     this[zoom] = 16;
     this[init]();
@@ -18942,105 +18955,129 @@ class Map {
    * 
    * @memberOf Map
    */
-  [init]() {
-    // map要素が無い場合は地図画面ではない
-    if (!document.getElementById("map")) {
-      console.log("this page is not map page");
-      return;
+
+
+  _createClass(Map, [{
+    key: init,
+    value: function value() {
+      var _this = this;
+
+      // map要素が無い場合は地図画面ではない
+      if (!document.getElementById("map")) {
+        console.log("this page is not map page");
+        return;
+      }
+
+      var std = _leaflet2.default.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      });
+
+      var chiriin = _leaflet2.default.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+        attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>"
+      });
+
+      var pf = _leaflet2.default.tileLayer('http://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+        attribution: '<a href="">precipitation</a>'
+      });
+
+      var pr = _leaflet2.default.tileLayer('http://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+        attribution: '<a href="">pressure</a>'
+      });
+
+      var wi = _leaflet2.default.tileLayer('http://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+        attribution: '<a href="">wind</a>'
+      });
+
+      var te = _leaflet2.default.tileLayer('http://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+        attribution: '<a href="">tempressure</a>'
+      });
+
+      this[map] = _leaflet2.default.map("map", {
+        center: [37.09, 138.52],
+        zoom: this[zoom],
+        layers: [std]
+      });
+
+      // 主題図レイヤーグループ化
+      var baseMaps = {
+        "Mapbox(osm)": std,
+        "Mapbox(chiriin)": chiriin
+      };
+
+      // オーバレイヤーグループ化
+      var overlayMaps = {
+        'Precipitation': pf,
+        'Pressure': pr,
+        'Wind': wi,
+        'Temperature': te
+      };
+
+      _leaflet2.default.control.layers(baseMaps, overlayMaps).addTo(this[map]);
+
+      // スケールバーを追加
+      _leaflet2.default.control.scale().addTo(this[map]);
+
+      // リサイズ
+      this[map].on('resize', function () {
+        _this[map].invalidateSize();
+      });
     }
 
-    let std = __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    });
+    /**
+     * 地図移動用メソッド
+     * 地域検索実行時に対象地域に地図の中心を移動する
+     * 
+     * @param {any} lat 緯度
+     * @param {any} lon 経度
+     * 
+     * @memberOf Map
+     */
 
-    let chiriin = __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
-      attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>"
-    });
+  }, {
+    key: 'mapPan',
+    value: function mapPan(lat, lon) {
+      this[map].panTo([lat, lon]);
+      this[map].setZoom(this[zoom]);
+    }
+  }]);
 
-    let pf = new __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.tileLayer('http://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
-      attribution: '<a href="">precipitation</a>'
-    });
+  return Map;
+}();
 
-    let pr = new __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.tileLayer('http://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
-      attribution: '<a href="">pressure</a>'
-    });
-
-    let wi = new __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.tileLayer('http://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
-      attribution: '<a href="">wind</a>'
-    });
-
-    let te = new __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.tileLayer('http://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
-      attribution: '<a href="">tempressure</a>'
-    });
-
-    this[map] = __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.map("map", {
-      center: [37.09, 138.52],
-      zoom: this[zoom],
-      layers: [std]
-    });
-
-    // 主題図レイヤーグループ化
-    let baseMaps = {
-      "Mapbox(osm)": std,
-      "Mapbox(chiriin)": chiriin
-    };
-
-    // オーバレイヤーグループ化
-    let overlayMaps = {
-      'Precipitation': pf,
-      'Pressure': pr,
-      'Wind': wi,
-      'Temperature': te
-    };
-
-    __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.control.layers(baseMaps, overlayMaps).addTo(this[map]);
-
-    // スケールバーを追加
-    __WEBPACK_IMPORTED_MODULE_0_leaflet___default.a.control.scale().addTo(this[map]);
-
-    // リサイズ
-    this[map].on('resize', () => {
-      this[map].invalidateSize();
-    });
-  }
-
-  /**
-   * 地図移動用メソッド
-   * 地域検索実行時に対象地域に地図の中心を移動する
-   * 
-   * @param {any} lat 緯度
-   * @param {any} lon 経度
-   * 
-   * @memberOf Map
-   */
-  mapPan(lat, lon) {
-    this[map].panTo([lat, lon]);
-    this[map].setZoom(this[zoom]);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Map;
-
+exports.default = Map;
 
 /***/ }),
 /* 232 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_polyfill__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_polyfill___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_polyfill__);
 
 
-const city = Symbol('city');
-const jsonParse = Symbol('jsonParse');
-const createUrl = Symbol('createUrl');
-const createImgUrl = Symbol('createImgUrl');
-const animationWrapper = Symbol('animationWrapper');
-const appendAlert = Symbol('appendAlert');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+__webpack_require__(86);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var city = Symbol('city');
+var jsonParse = Symbol('jsonParse');
+var createUrl = Symbol('createUrl');
+var createImgUrl = Symbol('createImgUrl');
+var animationWrapper = Symbol('animationWrapper');
+var appendAlert = Symbol('appendAlert');
+var timeout = Symbol('timeout');
 
 // Symbol対策
-
 
 /**
  * 天候データ取得クラス
@@ -19048,15 +19085,18 @@ const appendAlert = Symbol('appendAlert');
  * @export
  * @class Weather
  */
-class Weather {
+var Weather = function () {
 
   /**
    * Creates an instance of Weather.
    * 
    * @memberOf Weather
    */
-  constructor() {
+  function Weather() {
+    _classCallCheck(this, Weather);
+
     this[city] = "Tokyo";
+    this[timeout] = 400;
   }
 
   /**
@@ -19066,176 +19106,206 @@ class Weather {
    * 
    * @memberOf Weather
    */
-  [createUrl]() {
-    return 'http://api.openweathermap.org/data/2.5/weather?q=' + this[city] + '&APPID=9f70e15ce517f3eb8a5c50dabd8eaf57';
-  }
 
-  /**
-   * 地域情報設定メソッド
-   * 
-   * @param {any} inputCity 入力地域名
-   * 
-   * @memberOf Weather
-   */
-  setCity(inputCity) {
-    this[city] = inputCity;
-  }
 
-  /**
-   * 天気表示画像取得URL生成メソッド
-   * 
-   * @param {any} weather 天候ID
-   * @returns URL文字列
-   * 
-   * @memberOf Weather
-   */
-  [createImgUrl](weather) {
-    return '<div><img src="http://openweathermap.org/img/w/' + weather.icon + '.png">(' + weather.description + ')' + '</img></div>';
-  }
+  _createClass(Weather, [{
+    key: createUrl,
+    value: function value() {
+      return 'http://api.openweathermap.org/data/2.5/weather?q=' + this[city] + '&APPID=9f70e15ce517f3eb8a5c50dabd8eaf57';
+    }
 
-  /**
-   * 取得したJSONデータをパースし画面上に表示するメソッド
-   * 
-   * @param {any} json 取得データ
-   * 
-   * @memberOf Weather
-   */
-  [jsonParse](json) {
-    // let mo = moment;
-    let jsonData = json;
-    // 日付の設定
-    let sunrise = __WEBPACK_IMPORTED_MODULE_0_moment___default()(jsonData.sys.sunrise * 1000).locale(jsonData.sys.country);
-    let sunset = __WEBPACK_IMPORTED_MODULE_0_moment___default()(jsonData.sys.sunset * 1000).locale(jsonData.sys.country);
+    /**
+     * 地域情報設定メソッド
+     * 
+     * @param {any} inputCity 入力地域名
+     * 
+     * @memberOf Weather
+     */
 
-    let weather = jsonData.weather[0];
+  }, {
+    key: 'setCity',
+    value: function setCity(inputCity) {
+      this[city] = inputCity;
+    }
 
-    this[animationWrapper]($('#weather'), () => {
-      $('#weather').html(this[createImgUrl](weather));
-    });
-    this[animationWrapper]($('#city-name'), () => {
-      $('#city-name').text('Current weather in ' + jsonData.name);
-    });
-    this[animationWrapper]($('#temperature'), () => {
-      $('#temperature').text(jsonData.main.temp - 273.15 + '℃');
-    });
-    this[animationWrapper]($('#sunrise'), () => {
-      $('#sunrise').text(sunrise);
-    });
-    this[animationWrapper]($('#sunset'), () => {
-      $('#sunset').text(sunset);
-    });
-    this[animationWrapper]($('#pressure'), () => {
-      $('#pressure').text(jsonData.main.pressure + ' hpa');
-    });
-    this[animationWrapper]($('#humidity'), () => {
-      $('#humidity').text(jsonData.main.humidity + ' %');
-    });
-    this[animationWrapper]($('#wind'), () => {
-      $('#wind').text(jsonData.wind.speed + ' m/s');
-    });
-    this[animationWrapper]($('#cloud'), () => {
-      $('#cloud').text(jsonData.clouds.all + ' %');
-    });
-    this[animationWrapper]($('#latlon'), () => {
-      // change()を呼び出すことで変更イベントを発火
-      $('#latlon').text(jsonData.coord.lat + ',' + jsonData.coord.lon).change();
-    });
-  }
+    /**
+     * 天気表示画像取得URL生成メソッド
+     * 
+     * @param {any} weather 天候ID
+     * @returns URL文字列
+     * 
+     * @memberOf Weather
+     */
 
-  /**
-  * 汎用アニメーションメソッド
-  * 
-  * @param {any} elem 更新対象DOMエレメント
-  * @param {any} callback フェードイン後発火コールバック関数
-  * 
-  * @memberOf Weather
-  */
-  [animationWrapper](elem, callback) {
-    elem.fadeOut(400, () => {
-      callback();
-      elem.fadeIn(400);
-    });
-  }
+  }, {
+    key: createImgUrl,
+    value: function value(weather) {
+      return '<div><img src="http://openweathermap.org/img/w/' + weather.icon + '.png">(' + weather.description + ')' + '</img></div>';
+    }
 
-  [appendAlert](mes) {
-    let alertDiv = '<div id="danger" class="uk-alert-danger" uk-alert>' + '<a class="uk-alert-close" uk-close></a>' + '<p>取得出来ませんでした:' + mes + '</p>' + '</div>';
-    $("#alert-area").hide().html(alertDiv).fadeIn(400);
-  }
+    /**
+     * 取得したJSONデータをパースし画面上に表示するメソッド
+     * 
+     * @param {any} json 取得データ
+     * 
+     * @memberOf Weather
+     */
 
-  /**
-   * Ajax問合せメソッド
-   * 
-   * @memberOf Weather
-   */
-  getRequest() {
-    let url = this[createUrl]();
-    $.ajax({
-      url: url,
-      dataType: "jsonp"
-    }).then(json => {
-      $("#danger").fadeOut(() => {
-        $("#danger").remove();
+  }, {
+    key: jsonParse,
+    value: function value(json) {
+      var _this = this;
+
+      // let mo = moment;
+      var jsonData = json;
+      // 日付の設定
+      var sunrise = (0, _moment2.default)(jsonData.sys.sunrise * 1000).locale(jsonData.sys.country);
+      var sunset = (0, _moment2.default)(jsonData.sys.sunset * 1000).locale(jsonData.sys.country);
+
+      var weather = jsonData.weather[0];
+
+      this[animationWrapper]($('#weather'), function () {
+        $('#weather').html(_this[createImgUrl](weather));
       });
-      this[jsonParse](json);
-    }, err => {
-      console.log(err.status + ":" + err.statusText);
-      //alert('取得出来ませんでした。');
-      this[appendAlert](err.status + "," + err.statusText);
-    });
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Weather;
+      this[animationWrapper]($('#city-name'), function () {
+        $('#city-name').text('Current weather in ' + jsonData.name);
+      });
+      this[animationWrapper]($('#temperature'), function () {
+        $('#temperature').text(jsonData.main.temp - 273.15 + '℃');
+      });
+      this[animationWrapper]($('#sunrise'), function () {
+        $('#sunrise').text(sunrise);
+      });
+      this[animationWrapper]($('#sunset'), function () {
+        $('#sunset').text(sunset);
+      });
+      this[animationWrapper]($('#pressure'), function () {
+        $('#pressure').text(jsonData.main.pressure + ' hpa');
+      });
+      this[animationWrapper]($('#humidity'), function () {
+        $('#humidity').text(jsonData.main.humidity + ' %');
+      });
+      this[animationWrapper]($('#wind'), function () {
+        $('#wind').text(jsonData.wind.speed + ' m/s');
+      });
+      this[animationWrapper]($('#cloud'), function () {
+        $('#cloud').text(jsonData.clouds.all + ' %');
+      });
+      this[animationWrapper]($('#latlon'), function () {
+        // change()を呼び出すことで変更イベントを発火
+        $('#latlon').text(jsonData.coord.lat + ',' + jsonData.coord.lon).change();
+      });
+    }
 
+    /**
+    * 汎用アニメーションメソッド
+    * 
+    * @param {any} elem 更新対象DOMエレメント
+    * @param {any} callback フェードイン後発火コールバック関数
+    * 
+    * @memberOf Weather
+    */
+
+  }, {
+    key: animationWrapper,
+    value: function value(elem, callback) {
+      var _this2 = this;
+
+      elem.fadeOut(this[timeout], function () {
+        callback();
+        elem.fadeIn(_this2[timeout]);
+      });
+    }
+  }, {
+    key: appendAlert,
+    value: function value(mes) {
+      var alertDiv = '<div id="danger" class="uk-alert-danger" uk-alert>' + '<a class="uk-alert-close" uk-close></a>' + '<p>取得出来ませんでした:' + mes + '</p>' + '</div>';
+      $("#alert-area").hide().html(alertDiv).fadeIn(this[timeout]);
+    }
+
+    /**
+     * Ajax問合せメソッド
+     * 
+     * @memberOf Weather
+     */
+
+  }, {
+    key: 'getRequest',
+    value: function getRequest() {
+      var _this3 = this;
+
+      var url = this[createUrl]();
+      $.ajax({
+        url: url,
+        dataType: "jsonp"
+      }).then(function (json) {
+        $("#danger").fadeOut(function () {
+          $("#danger").remove();
+        });
+        _this3[jsonParse](json);
+      }, function (err) {
+        console.log(err.status + ":" + err.statusText);
+        _this3[appendAlert](err.status + "," + err.statusText);
+      });
+    }
+  }]);
+
+  return Weather;
+}();
+
+exports.default = Weather;
 
 /***/ }),
 /* 233 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__weather__ = __webpack_require__(232);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__map__ = __webpack_require__(231);
 
 
+var _weather = __webpack_require__(232);
+
+var _weather2 = _interopRequireDefault(_weather);
+
+var _map = __webpack_require__(231);
+
+var _map2 = _interopRequireDefault(_map);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(function () {
   // 初期化処理
-  let weather = new __WEBPACK_IMPORTED_MODULE_0__weather__["a" /* default */]();
-  let map = new __WEBPACK_IMPORTED_MODULE_1__map__["a" /* default */]();
-  const lat = 0;
-  const lon = 1;
+  var weather = new _weather2.default();
+  var map = new _map2.default();
+  var lat = 0;
+  var lon = 1;
 
   // 初回の発火
   weather.getRequest();
 
-  let searchExec = elemId => {
-    let newCity = $(elemId).val();
+  var searchExec = function searchExec(elemId) {
+    var newCity = $(elemId).val();
     weather.setCity(newCity);
     weather.getRequest();
   };
 
   // イベント設定 検索ボタンクリック
-  $('#search-city').click(() => {
+  $('#search-city').click(function () {
     searchExec('#input-city');
   });
-  $('#fixed-search-city').click(() => {
+  $('#fixed-search-city').click(function () {
     searchExec('#fixed-input-city');
   });
 
   // イベント設定 検索ボックスエンターキー押下
-  $('#input-city').keypress(e => {
+  $('#input-city').keypress(function (e) {
     if (e.which === 13) {
       searchExec('#input-city');
     }
   });
 
-  $("#latlon").change(() => {
-    let latlon = $("#latlon").text().split(",");
+  $("#latlon").change(function () {
+    var latlon = $("#latlon").text().split(",");
     map.mapPan(latlon[lat], latlon[lon]);
-  });
-
-  $("#map-area").on('show', () => {
-    currentTab = "map";
   });
 });
 

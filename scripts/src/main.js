@@ -36,8 +36,4 @@ $(function() {
     let latlon = $("#latlon").text().split(",");
     map.mapPan(latlon[lat], latlon[lon]);
   });
-
-  $("#map-area").on('show', () => {
-    currentTab = "map";
-  });
 });

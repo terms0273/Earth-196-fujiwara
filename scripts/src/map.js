@@ -53,23 +53,23 @@ export default class Map {
     });
 
 
-    let pf = new L.tileLayer('http://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+    let pf = L.tileLayer('http://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
       attribution: '<a href="">precipitation</a>',
       // opacity: 0.8
     });
 
-    let pr = new L.tileLayer('http://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+    let pr = L.tileLayer('http://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
       attribution: '<a href="">pressure</a>',
       // opacity: 0.8
     });
 
 
-    let wi = new L.tileLayer('http://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+    let wi = L.tileLayer('http://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
       attribution: '<a href="">wind</a>',
       // opacity: 0.8
     });
 
-    let te = new L.tileLayer('http://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
+    let te = L.tileLayer('http://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=9f70e15ce517f3eb8a5c50dabd8eaf57', {
       attribution: '<a href="">tempressure</a>',
       // opacity: 0.8
     });
