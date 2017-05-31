@@ -27,7 +27,6 @@ body, html {
 }
 
 #contents {
-  /* padding-bottom: 30px;*/
   display: flex;
 }
 
@@ -194,10 +193,59 @@ div.tooltip {
 } 
 
 #map-contents {
+  min-width: 600px;
   flex: 1;
 }
 
 #map {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.weather-label,
+.temperature-label,
+.flow-label,
+.cloud-label,
+.pressure-label,
+.humidity-label,
+.sunrise-label,
+.sunset-label,
+.latlon-label {
+  font-size: x-small;
+}
+
+.weather-icon,
+.temperature-icon,
+.flow-icon,
+.cloud-icon,
+.pressure-icon,
+.humidity-icon,
+.sunrise-icon,
+.sunset-icon,
+.latlon-icon {
+    width: 40px;
+    margin: 0 auto;
+}
+
+.weahter-td, 
+.temperature-td,
+.flow-td,
+.cloud-td,
+.pressure-td, 
+.humidity-td,
+.sunrise-td,
+.sunset-td,
+.latlon-td {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.uk-table td {
+    padding: 5px 12px;
+    vertical-align: middle;
+}
+
+.uk-table {
+  border-collapse: separate; 
 }

@@ -4,6 +4,7 @@ const city = Symbol('city');
 const jsonParse = Symbol('jsonParse');
 const createUrl = Symbol('createUrl');
 const createImgUrl = Symbol('createImgUrl');
+const animationWrapper = Symbol('animationWrapper');
 
 // Symbol対策
 import "babel-polyfill";
@@ -71,25 +72,60 @@ export default class Weather {
    * @memberOf Weather
    */
   [jsonParse](json) {
-    let mo = moment;
-    let jsonData = json; // json.body; // superagent版 jsonpにしたら違うのかも
+    // let mo = moment;
+    let jsonData = json;
     // 日付の設定
     let sunrise = moment(jsonData.sys.sunrise * 1000).locale(jsonData.sys.country);
     let sunset = moment(jsonData.sys.sunset * 1000).locale(jsonData.sys.country);
 
     let weather = jsonData.weather[0];
-
-    $('#weather').html(this[createImgUrl](weather));
-    $('#city-name').text('Current weather in ' + jsonData.name);
-    $('#temperature').text((jsonData.main.temp - 273.15) + '℃');
-    $('#sunrise').text(sunrise);
-    $('#sunset').text(sunset);
-    $('#pressure').text(jsonData.main.pressure + ' hpa');
-    $('#humidity').text(jsonData.main.humidity + ' %');
-    $('#wind').text(jsonData.wind.speed + ' m/s');
-    $('#cloud').text(jsonData.clouds.all + ' %');
-    // change()を呼び出すことでイベントを発火
-    $('#latlon').text(jsonData.coord.lat + ',' + jsonData.coord.lon).change();
+    
+    this[animationWrapper]($('#weather'), () => {
+      $('#weather').html(this[createImgUrl](weather));
+    });    
+    this[animationWrapper]($('#city-name'), () => {
+      $('#city-name').text('Current weather in ' + jsonData.name);
+    });
+    this[animationWrapper]($('#temperature'), () => {
+      $('#temperature').text((jsonData.main.temp - 273.15) + '℃');
+    });
+    this[animationWrapper]($('#sunrise'), () => {
+      $('#sunrise').text(sunrise);
+    });
+    this[animationWrapper]($('#sunset'), () => {
+      $('#sunset').text(sunset)
+    });
+    this[animationWrapper]($('#pressure'), () => {
+      $('#pressure').text(jsonData.main.pressure + ' hpa');
+    });
+    this[animationWrapper]($('#humidity'), () => {
+      $('#humidity').text(jsonData.main.humidity + ' %');
+    });
+    this[animationWrapper]($('#wind'), () => {
+      $('#wind').text(jsonData.wind.speed + ' m/s');
+    });
+    this[animationWrapper]($('#cloud'), () => {
+      $('#cloud').text(jsonData.clouds.all + ' %');
+    });
+    this[animationWrapper]($('#latlon'), () => {
+      // change()を呼び出すことで変更イベントを発火
+      $('#latlon').text(jsonData.coord.lat + ',' + jsonData.coord.lon).change();
+    });
+  }
+  
+    /**
+   * 汎用アニメーションメソッド
+   * 
+   * @param {elem} 更新対象DOMエレメント
+   * @param {callback} フェードイン後発火コールバック関数
+   * 
+   * @memberOf Weather
+   */
+  [animationWrapper](elem, callback) {
+    elem.fadeOut(400, () => {
+      callback();
+      elem.fadeIn(400);
+    });    
   }
 
   /**
