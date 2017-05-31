@@ -19037,6 +19037,7 @@ const jsonParse = Symbol('jsonParse');
 const createUrl = Symbol('createUrl');
 const createImgUrl = Symbol('createImgUrl');
 const animationWrapper = Symbol('animationWrapper');
+const appendAlert = Symbol('appendAlert');
 
 // Symbol対策
 
@@ -19144,8 +19145,8 @@ class Weather {
   /**
   * 汎用アニメーションメソッド
   * 
-  * @param {elem} 更新対象DOMエレメント
-  * @param {callback} フェードイン後発火コールバック関数
+  * @param {any} elem 更新対象DOMエレメント
+  * @param {any} callback フェードイン後発火コールバック関数
   * 
   * @memberOf Weather
   */
@@ -19154,6 +19155,11 @@ class Weather {
       callback();
       elem.fadeIn(400);
     });
+  }
+
+  [appendAlert](mes) {
+    let alertDiv = '<div id="danger" class="uk-alert-danger" uk-alert>' + '<a class="uk-alert-close" uk-close></a>' + '<p>取得出来ませんでした:' + mes + '</p>' + '</div>';
+    $("#alert-area").hide().html(alertDiv).fadeIn(400);
   }
 
   /**
@@ -19167,10 +19173,14 @@ class Weather {
       url: url,
       dataType: "jsonp"
     }).then(json => {
+      $("#danger").fadeOut(() => {
+        $("#danger").remove();
+      });
       this[jsonParse](json);
     }, err => {
       console.log(err.status + ":" + err.statusText);
-      alert('取得出来ませんでした。');
+      //alert('取得出来ませんでした。');
+      this[appendAlert](err.status + "," + err.statusText);
     });
   }
 }

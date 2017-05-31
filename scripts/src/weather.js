@@ -5,6 +5,7 @@ const jsonParse = Symbol('jsonParse');
 const createUrl = Symbol('createUrl');
 const createImgUrl = Symbol('createImgUrl');
 const animationWrapper = Symbol('animationWrapper');
+const appendAlert = Symbol('appendAlert');
 
 // Symbol対策
 import "babel-polyfill";
@@ -127,6 +128,14 @@ export default class Weather {
       elem.fadeIn(400);
     });    
   }
+  
+  [appendAlert](mes) {
+    let alertDiv = '<div id="danger" class="uk-alert-danger" uk-alert>' + 
+            '<a class="uk-alert-close" uk-close></a>' + 
+            '<p>取得出来ませんでした:' + mes + '</p>' + 
+            '</div>';
+    $("#alert-area").hide().html(alertDiv).fadeIn(400);  
+  }
 
   /**
    * Ajax問合せメソッド
@@ -139,10 +148,13 @@ export default class Weather {
       url: url,
       dataType: "jsonp",
     }).then((json) => {
+      $("#danger").fadeOut(() => { 
+        $("#danger").remove();
+      });
       this[jsonParse](json);
     }, (err) => {
       console.log(err.status + ":" + err.statusText);
-      alert('取得出来ませんでした。');
+      this[appendAlert](err.status + "," + err.statusText);
     });
   }
 }
